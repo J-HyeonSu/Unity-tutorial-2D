@@ -18,33 +18,43 @@ public class PlayerMovement : MonoBehaviour
     {
         rb = GetComponent<Rigidbody>();
     }
-
-
     // Update is called once per frame
     private void Update()
     {
-        var moveX = Input.GetAxis("Horizontal");
-        var moveY = Input.GetAxis("Vertical");
+        float moveX = Input.GetAxis("Horizontal"); // ad
+        float moveY = Input.GetAxis("Vertical"); // ws
+        
+        Vector3 forward = transform.forward;
+        Vector3 right = transform.right;
 
-        moveDirection = new Vector3(moveX, 0f, moveY).normalized;
-        rb.MovePosition(rb.position + moveDirection * moveSpeed * Time.deltaTime);
+        forward.y = 0f;
+        right.y = 0f;
+        forward.Normalize();
+        right.Normalize();
 
-        if (Input.GetKeyDown(KeyCode.Space) && isGrounded()) rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
+        moveDirection = (forward * moveY + right * moveX).normalized;
+        
+
+        if (Input.GetKeyDown(KeyCode.Space) && IsGrounded())
+        {
+            rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
+        }
     }
 
     private void FixedUpdate()
     {
+        rb.MovePosition(rb.position + moveDirection * (moveSpeed * Time.deltaTime));
     }
 
     private void OnDrawGizmos()
     {
         Gizmos.color = Color.red;
-        Gizmos.DrawRay(transform.position, Vector3.down * (groundCheckDistance + 0.1f));
+        Gizmos.DrawRay(transform.position, Vector3.down * (groundCheckDistance));
     }
 
-    private bool isGrounded()
+    private bool IsGrounded()
     {
-        var hit = Physics.Raycast(transform.position, Vector3.down, groundCheckDistance + 0.3f, groundLayer);
+        bool hit = Physics.Raycast(transform.position, Vector3.down, groundCheckDistance, groundLayer);
         Debug.Log("IsGrounded: " + hit);
         return hit;
     }

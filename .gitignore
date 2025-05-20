@@ -77,3 +77,6 @@ crashlytics-build.properties
 #Rider / Intellij 설정폴더
 .idea/
 *.iml
+
+#StoreAssets
+Assets/StoreAssets/
