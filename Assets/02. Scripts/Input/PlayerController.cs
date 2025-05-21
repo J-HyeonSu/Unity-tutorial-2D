@@ -25,6 +25,9 @@ public class PlayerController : ValidatedMonoBehaviour
 
     private float currentSpeed;
     private float velocity;
+    
+    //애니메이터 값
+    private static readonly int Speed = Animator.StringToHash("Speed");
 
     void Awake()
     {
@@ -54,7 +57,13 @@ public class PlayerController : ValidatedMonoBehaviour
     {
         //매프레임 이동처리
         HandleMovement();
-        
+        UpdateAnimator();
+
+    }
+
+    private void UpdateAnimator()
+    {
+        animator.SetFloat(Speed, currentSpeed);
     }
 
     private void HandleMovement()
