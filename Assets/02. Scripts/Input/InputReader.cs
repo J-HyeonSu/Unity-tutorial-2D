@@ -11,6 +11,9 @@ public class InputReader : ScriptableObject, InputSystem_Actions.IPlayerActions
     public event UnityAction EnableMouseControlCamera = delegate { };
     public event UnityAction DisableMouseControlCamera = delegate { };
 
+    public event UnityAction<bool> Jump = delegate { };
+
+
     private InputSystem_Actions inputActions;
 
     public Vector3 Direction => (Vector3)inputActions.Player.Move.ReadValue<Vector2>();
@@ -79,7 +82,16 @@ public class InputReader : ScriptableObject, InputSystem_Actions.IPlayerActions
 
     public void OnJump(InputAction.CallbackContext context)
     {
-        // noop
+        
+        switch (context.phase)
+        {
+            case InputActionPhase.Started:
+                Jump.Invoke(true);
+                break;
+            case InputActionPhase.Canceled:
+                Jump.Invoke(false);
+                break;
+        }
     }
 
     public void OnPrevious(InputAction.CallbackContext context)
