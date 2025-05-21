@@ -15,6 +15,8 @@ public class InputReader : ScriptableObject, InputSystem_Actions.IPlayerActions
 
     public Vector3 Direction => (Vector3)inputActions.Player.Move.ReadValue<Vector2>();
 
+    
+    //ScriptableObject가 활성화될 때 Input System 초기화 및 활성화
     void OnEnable()
     {
         if (inputActions == null)
@@ -22,17 +24,26 @@ public class InputReader : ScriptableObject, InputSystem_Actions.IPlayerActions
             inputActions = new InputSystem_Actions();
             inputActions.Player.SetCallbacks(this);
         }
+        
+    }
+
+    public void EnablePlayerActions()
+    {
         inputActions.Enable();
     }
     
     public void DisableInputActions()
     {
+        inputActions.UI.Disable();
+        inputActions.Disable();
+        inputActions.Dispose();
         if (Application.isPlaying && inputActions != null)
         {
-            inputActions.Dispose();    
+            
+
         }
     }
-
+    
     public void OnMove(InputAction.CallbackContext context)
     {
         Move.Invoke(context.ReadValue<Vector2>());
@@ -90,9 +101,11 @@ public class InputReader : ScriptableObject, InputSystem_Actions.IPlayerActions
     {
         switch (context.phase)
         {
+            //우클릭 눌렀을때
             case InputActionPhase.Started:
                 EnableMouseControlCamera.Invoke();
                 break;
+            //우클릭 떌떄
             case InputActionPhase.Canceled: 
                 DisableMouseControlCamera.Invoke() ;
                 break;
