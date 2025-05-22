@@ -5,14 +5,8 @@ using Cinemachine;
 using DG.Tweening;
 using Utilities;
 using UnityEngine;
-/***
- * 챌린지
- * 1. Update Input Reader
- * 2. Add Animation
- * 3. Add Dash Timers
- * 4. Dash State
- * 5. Affect RB Velocity
- */
+
+
 
 namespace Platformer
 {
