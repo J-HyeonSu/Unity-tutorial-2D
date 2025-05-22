@@ -6,7 +6,23 @@ namespace Platformer
 {
     public class CollectibleSpawnManager : EntitySpawnManager
     {
-        //Scriptable Object(CollectㅑbleData로 만든거)
+        /***
+            CollectibleSpawnManager : EntitySpawnManager
+            │
+            ├── CollectibleData[] : CollectibleData
+            │   └── CollectibleData : EntityData (ScriptableObject)
+            │
+            ├── EntitySpawner<Collectible>
+            │   ├── IEntityFactory<Collectible>
+            │   │   └── EntityFactory<Collectible> (EntityData[] data)
+            │   │       └── EntityData.prefab 인스턴스 생성
+            │   │
+            │   └── ISpawnPointStrategy
+            │       ├── LinearSpawnPointStrategy(Transform[] spawnPoints)
+            │       └── RandomSpawnPointStrategy(Transform[] spawnPoints)
+
+         */         
+        //Scriptable Object(CollectibleData로 만든거)
         [SerializeField] private CollectibleData[] collectibleData;
         [SerializeField] private float spawnInterval = 1f;
 
