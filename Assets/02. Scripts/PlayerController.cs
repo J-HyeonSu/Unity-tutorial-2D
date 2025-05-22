@@ -2,8 +2,17 @@ using System;
 using System.Collections.Generic;
 using KBCore.Refs;
 using Cinemachine;
+using DG.Tweening;
 using Utilities;
 using UnityEngine;
+/***
+ * 챌린지
+ * 1. Update Input Reader
+ * 2. Add Animation
+ * 3. Add Dash Timers
+ * 4. Dash State
+ * 5. Affect RB Velocity
+ */
 
 namespace Platformer
 {
@@ -24,12 +33,19 @@ namespace Platformer
         [SerializeField] float rotationSpeed = 15f;
         [SerializeField] float smoothTime = 0.2f;
 
-        [Header("JumpSetting")] 
+        [Header("Jump Setting")] 
         [SerializeField] float jumpForce = 10f;
         [SerializeField] float jumpDuration = 0.5f;
         [SerializeField] float jumpCooldown = 0f;
         //[SerializeField] float jumpMaxHeight = 2f;
         [SerializeField] float gravityMultiplier = 3f;
+
+        [Header("Dash Setting")] 
+        [SerializeField] private float dashForce = 5f;
+        [SerializeField] private float dashDuration = 1f;
+        [SerializeField] private float dashCooldown = 2f;
+        
+        
 
         const float ZeroF = 0f;
 
@@ -38,12 +54,18 @@ namespace Platformer
         private float currentSpeed;
         private float velocity;
         private float jumpVelocity;
+        private float dashVelocity = 1f;
+        
 
         private Vector3 movement;
 
         private List<Timer> timers;
         private CountdownTimer jumpTimer;
         private CountdownTimer jumpCooldownTimer;
+
+        private CountdownTimer dashTimer;
+        private CountdownTimer dashCooldownTimer;
+        
 
         private StateMachine stateMachine;
 
@@ -67,10 +89,23 @@ namespace Platformer
             //Setup Timer
             jumpTimer = new CountdownTimer(jumpDuration);
             jumpCooldownTimer = new CountdownTimer(jumpCooldown);
-            timers = new List<Timer>(2) { jumpTimer, jumpCooldownTimer };
             
             jumpTimer.OnTimerStart += () => jumpVelocity = jumpForce;
             jumpTimer.OnTimerStop += () => jumpCooldownTimer.Start();
+            
+            
+            dashTimer = new CountdownTimer(dashDuration);
+            dashCooldownTimer = new CountdownTimer(dashCooldown);
+
+            dashTimer.OnTimerStart += () => dashVelocity = dashForce;
+            dashTimer.OnTimerStop += () =>
+            {
+                dashVelocity = 1f;
+                dashCooldownTimer.Start();
+            };
+            
+            
+            timers = new List<Timer>(4) { jumpTimer, jumpCooldownTimer , dashTimer, dashCooldownTimer};
 
             //State Machine
             stateMachine = new StateMachine();
@@ -78,10 +113,13 @@ namespace Platformer
             //Declare states
             var locomotionState = new LocomotionState(this, animator);
             var jumpState = new JumpState(this, animator);
+            var dashState = new DashState(this, animator);
 
             //Define transitions
             At(locomotionState, jumpState, new FuncPredicate(()=>jumpTimer.IsRunning));
-            At(jumpState, locomotionState, new FuncPredicate(()=> groundChecker.IsGrounded && !jumpTimer.IsRunning));
+            At(locomotionState, dashState, new FuncPredicate(()=> dashTimer.IsRunning));
+            Any(locomotionState, new FuncPredicate(()=> groundChecker.IsGrounded && !jumpTimer.IsRunning &&!dashTimer.IsRunning));
+            
             
             //Set initial state
             stateMachine.SetState(locomotionState);
@@ -105,11 +143,13 @@ namespace Platformer
         void OnEnable()
         {
             input.Jump += OnJump;
+            input.Dash += OnDash;
         }
 
         void OnDisable()
         {
             input.Jump -= OnJump;
+            input.Dash -= OnDash;
             input.DisableInputActions();
         }
 
@@ -124,6 +164,18 @@ namespace Platformer
             {
                 //false true
                 jumpTimer.Stop();
+            }
+        }
+
+        void OnDash(bool performed)
+        {
+            if (performed && !dashTimer.IsRunning && !dashCooldownTimer.IsRunning)
+            {
+                dashTimer.Start();
+            }
+            else if (!performed && dashTimer.IsRunning)
+            {
+                dashTimer.Stop();
             }
         }
 
@@ -168,6 +220,7 @@ namespace Platformer
 
             rb.linearVelocity = new Vector3(rb.linearVelocity.x, jumpVelocity, rb.linearVelocity.z);
         }
+        
 
         private void UpdateAnimator()
         {
@@ -204,7 +257,7 @@ namespace Platformer
 
         private void HandleHorizontalMovement(Vector3 adjustedDirection)
         {
-            Vector3 velocity = adjustedDirection * (moveSpeed * Time.fixedDeltaTime);
+            Vector3 velocity = adjustedDirection * (moveSpeed * dashVelocity *Time.fixedDeltaTime);
             rb.linearVelocity = new Vector3(velocity.x, rb.linearVelocity.y, velocity.z);
         }
 
@@ -224,5 +277,7 @@ namespace Platformer
         {
             currentSpeed = Mathf.SmoothDamp(currentSpeed, value, ref velocity, smoothTime);
         }
+
+        
     }
 }

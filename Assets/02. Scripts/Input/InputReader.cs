@@ -13,6 +13,8 @@ public class InputReader : ScriptableObject, InputSystem_Actions.IPlayerActions
 
     public event UnityAction<bool> Jump = delegate { };
 
+    public event UnityAction<bool> Dash = delegate { };
+
 
     private InputSystem_Actions inputActions;
 
@@ -104,9 +106,20 @@ public class InputReader : ScriptableObject, InputSystem_Actions.IPlayerActions
         // noop
     }
 
-    public void OnSprint(InputAction.CallbackContext context)
+    public void OnDash(InputAction.CallbackContext context)
     {
-        // noop
+        switch (context.phase)
+        {
+            //우클릭 눌렀을때
+            case InputActionPhase.Started:
+                Dash.Invoke(true);
+                break;
+            //우클릭 떌떄
+            case InputActionPhase.Canceled: 
+                Dash.Invoke(false) ;
+                break;
+            
+        }
     }
 
     public void OnMouseControlCamera(InputAction.CallbackContext context)
