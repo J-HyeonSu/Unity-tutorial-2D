@@ -10,11 +10,9 @@ public class InputReader : ScriptableObject, InputSystem_Actions.IPlayerActions
     public event UnityAction<Vector2, bool> Look = delegate { };
     public event UnityAction EnableMouseControlCamera = delegate { };
     public event UnityAction DisableMouseControlCamera = delegate { };
-
     public event UnityAction<bool> Jump = delegate { };
-
     public event UnityAction<bool> Dash = delegate { };
-
+    public event UnityAction Attack = delegate { };
 
     private InputSystem_Actions inputActions;
 
@@ -69,7 +67,7 @@ public class InputReader : ScriptableObject, InputSystem_Actions.IPlayerActions
 
     public void OnAttack(InputAction.CallbackContext context)
     {
-        // noop
+        if (context.phase == InputActionPhase.Started) Attack.Invoke();
     }
 
     public void OnInteract(InputAction.CallbackContext context)
@@ -137,7 +135,5 @@ public class InputReader : ScriptableObject, InputSystem_Actions.IPlayerActions
             
         }
     }
-    
-    
     
 }

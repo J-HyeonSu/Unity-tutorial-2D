@@ -13,6 +13,8 @@ namespace Platformer
         [SerializeField] private float attackRange = 2f;
         
         public Transform Player { get; private set; }
+        public Health PlayerHealth { get; private set; }
+        
         private CountdownTimer detectionTimer;
 
         private IDetectionStrategy detectionStrategy;
@@ -20,6 +22,7 @@ namespace Platformer
         void Awake()
         {
             Player = GameObject.FindGameObjectWithTag("Player").transform;
+            PlayerHealth = Player.GetComponent<Health>();
         }
 
         private void Start()

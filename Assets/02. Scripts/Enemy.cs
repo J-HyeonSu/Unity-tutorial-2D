@@ -59,6 +59,7 @@ namespace Platformer
             if (attackTimer.IsRunning) return;
 
             attackTimer.Start();
+            playerDetector.PlayerHealth.TakeDamage(10);
             
         }
         

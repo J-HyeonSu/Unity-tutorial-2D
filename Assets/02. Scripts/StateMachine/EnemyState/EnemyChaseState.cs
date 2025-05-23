@@ -17,7 +17,6 @@ namespace Platformer
         
         public override void OnEnter()
         {
-            Debug.Log("Chase");
             animator.CrossFade(RunHash, crossFadeDuration);
         }
 
