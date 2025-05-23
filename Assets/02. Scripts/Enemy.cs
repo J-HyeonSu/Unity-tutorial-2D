@@ -6,10 +6,13 @@ using UnityEngine.AI;
 namespace Platformer
 {
     [RequireComponent(typeof(NavMeshAgent))]
+    [RequireComponent(typeof(PlayerDetector))]
     public class Enemy : Entity
     {
         [SerializeField, Self] private NavMeshAgent agent;
+        [SerializeField, Self] private PlayerDetector playerDetector;
         [SerializeField, Child] private Animator animator;
+        [SerializeField] private float wanderRadius = 10;
 
         private StateMachine stateMachine;
 
@@ -19,9 +22,12 @@ namespace Platformer
         {
             stateMachine = new StateMachine();
 
-            var wanderState = new EnemyWanderState(this, animator, agent, 5f);
+            var wanderState = new EnemyWanderState(this, animator, agent, wanderRadius);
+            var chaseState = new EnemyChaseState(this, animator, agent, playerDetector.Player);
             
-            Any(wanderState, new FuncPredicate(()=> true));
+            At(wanderState, chaseState, new FuncPredicate(()=> playerDetector.CanDetectPlayer()));
+            At(chaseState, wanderState, new FuncPredicate(()=> !playerDetector.CanDetectPlayer()));
+            //Any(wanderState, new FuncPredicate(()=> true));
             stateMachine.SetState(wanderState);
         }
 
@@ -37,5 +43,6 @@ namespace Platformer
         {
             stateMachine.FixedUpdate();
         }
+        
     }
 }

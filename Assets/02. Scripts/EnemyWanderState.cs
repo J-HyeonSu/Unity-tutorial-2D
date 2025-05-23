@@ -5,11 +5,12 @@ namespace Platformer
 {
     public class EnemyWanderState : EnemyBaseState
     {
-        private NavMeshAgent agent;
-        private Vector3 startPoint;
-        private float wanderRadius;
+        readonly NavMeshAgent agent;
+        readonly Vector3 startPoint;
+        readonly float wanderRadius;
 
-        public EnemyWanderState(Enemy enemy, Animator animator,NavMeshAgent agent, float wanderRadius) : base(enemy, animator)
+        public EnemyWanderState(Enemy enemy, Animator animator, NavMeshAgent agent, float wanderRadius) : base(enemy,
+            animator)
         {
             this.agent = agent;
             this.startPoint = enemy.transform.position;
@@ -31,12 +32,12 @@ namespace Platformer
                 NavMeshHit hit;
                 NavMesh.SamplePosition(randomDirection, out hit, wanderRadius, 1);
                 var finalPosition = hit.position;
-                
+
                 agent.SetDestination(finalPosition);
             }
         }
 
-        private bool HasReachedDestination()
+        bool HasReachedDestination()
         {
             return !agent.pathPending
                    && agent.remainingDistance <= agent.stoppingDistance
