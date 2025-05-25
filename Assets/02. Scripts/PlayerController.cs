@@ -101,6 +101,7 @@ namespace Platformer
             var jumpState = new JumpState(this, animator);
             var dashState = new DashState(this, animator);
             var attackState = new AttackState(this, animator);
+            var deadState = new DeadState(this, animator);
             
 
             //Define transitions
@@ -108,6 +109,7 @@ namespace Platformer
             At(locomotionState, dashState, new FuncPredicate(()=> dashTimer.IsRunning));
             At(locomotionState, attackState, new FuncPredicate(()=> attackTimer.IsRunning));
             At(attackState, locomotionState, new FuncPredicate(()=> !attackTimer.IsRunning));
+            Any(deadState, new FuncPredicate(()=>GetComponent<Health>().IsDead));
             Any(locomotionState, new FuncPredicate(ReturnToLocomotionState));
             
             

@@ -43,9 +43,12 @@ namespace Platformer
 
         public bool CanAttackPlayer()
         {
+            if (!Player) return false;
+            
             var directionToPlayer = Player.position - transform.position;
-            return directionToPlayer.magnitude <= attackRange;
+            return directionToPlayer.magnitude <= attackRange;                
         }
+        
 
         public void SetDetectionStrategy(IDetectionStrategy detectionStrategy)
         {

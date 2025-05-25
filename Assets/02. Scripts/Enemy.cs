@@ -16,6 +16,7 @@ namespace Platformer
         [SerializeField] private float wanderRadius = 10;
         [SerializeField] private float timeBetweenAttacks = 1f;
         [SerializeField] private int attackDamage = 10;
+        [SerializeField] private EntityEventListener deadEventListener;
 
         private StateMachine stateMachine;
         private CountdownTimer attackTimer;
@@ -62,6 +63,12 @@ namespace Platformer
             attackTimer.Start();
             playerDetector.PlayerHealth.TakeDamage(attackDamage);
             
+        }
+
+        public void Dead()
+        {
+            
+            Destroy(gameObject);
         }
         
     }

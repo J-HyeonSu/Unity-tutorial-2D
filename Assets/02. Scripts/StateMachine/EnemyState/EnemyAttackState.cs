@@ -3,6 +3,7 @@ using UnityEngine.AI;
 
 namespace Platformer
 {
+    
     public class EnemyAttackState : EnemyBaseState
     {
         private readonly NavMeshAgent agent;
