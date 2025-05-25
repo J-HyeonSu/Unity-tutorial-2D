@@ -13,7 +13,7 @@ namespace Platformer
         protected static readonly int RunHash = Animator.StringToHash("RunFWD");
         protected static readonly int WalkHash = Animator.StringToHash("WalkFWD");
         protected static readonly int AttackHash = Animator.StringToHash("Mushroom_Attack01Smile");
-        protected static readonly int DieHash = Animator.StringToHash("Die");
+        protected static readonly int DieHash = Animator.StringToHash("Mushroom_DieSmile");
         
         protected const float crossFadeDuration = 0.1f;
 

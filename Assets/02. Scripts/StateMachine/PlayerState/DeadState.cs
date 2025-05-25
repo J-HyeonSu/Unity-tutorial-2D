@@ -14,6 +14,7 @@ namespace Platformer
 
         public override void FixedUpdate()
         {
+            
         }
     }
 }

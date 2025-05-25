@@ -16,10 +16,11 @@ namespace Platformer
         [SerializeField] private float wanderRadius = 10;
         [SerializeField] private float timeBetweenAttacks = 1f;
         [SerializeField] private int attackDamage = 10;
-        [SerializeField] private EntityEventListener deadEventListener;
+        [SerializeField] private float deadTime = 10f;
 
         private StateMachine stateMachine;
         private CountdownTimer attackTimer;
+        private CountdownTimer deadTimer;
         
 
         void OnValidate() => this.ValidateRefs();
@@ -28,17 +29,18 @@ namespace Platformer
         {
             stateMachine = new StateMachine();
             attackTimer = new CountdownTimer(timeBetweenAttacks);
+            deadTimer = new CountdownTimer(deadTime);
 
             var wanderState = new EnemyWanderState(this, animator, agent, wanderRadius);
             var chaseState = new EnemyChaseState(this, animator, agent, playerDetector.Player);
             var attackState = new EnemyAttackState(this, animator, agent, playerDetector.Player);
-            
+            var deadState = new EnemyDeadState(this, animator, agent, playerDetector.Player);
             
             At(wanderState, chaseState, new FuncPredicate(()=> playerDetector.CanDetectPlayer()));
             At(chaseState, wanderState, new FuncPredicate(()=> !playerDetector.CanDetectPlayer()));
             At(chaseState, attackState, new FuncPredicate(()=> playerDetector.CanAttackPlayer()));
             At(attackState, chaseState, new FuncPredicate(()=> !playerDetector.CanAttackPlayer()));
-            //Any(wanderState, new FuncPredicate(()=> true));
+            Any(deadState, new FuncPredicate(()=> GetComponent<Health>().IsDead));
             stateMachine.SetState(wanderState);
         }
 
@@ -49,6 +51,7 @@ namespace Platformer
         {
             stateMachine.Update();
             attackTimer.Tick(Time.deltaTime);
+            deadTimer.Tick(Time.deltaTime);
         }
 
         private void FixedUpdate()
@@ -65,10 +68,18 @@ namespace Platformer
             
         }
 
+        
         public void Dead()
         {
+            if (deadTimer.IsRunning) return;
+            
             
             Destroy(gameObject);
+        }
+
+        public void DeadTimerStart()
+        {
+            deadTimer.Start();
         }
         
     }
