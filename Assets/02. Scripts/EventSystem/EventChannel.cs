@@ -35,5 +35,4 @@ namespace Platformer
     public class EventChannel : EventChannel<Empty>
     {
     }
-    
 }

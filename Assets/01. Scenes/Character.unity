@@ -1081,6 +1081,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2480606466614448909, guid: b42e07fef6b137347b5a74caa4fc9084, type: 3}
+      propertyPath: attackDamage
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 7105925507298814460, guid: b42e07fef6b137347b5a74caa4fc9084, type: 3}
       propertyPath: m_Enabled
       value: 1
@@ -1371,6 +1375,7 @@ MonoBehaviour:
   animator: {fileID: 1286238409}
   wanderRadius: 10
   timeBetweenAttacks: 1
+  attackDamage: 10
 --- !u!114 &1026915706
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1451,7 +1456,8 @@ PrefabInstance:
       propertyPath: m_Name
       value: CoinGold
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: -6916042029650839938, guid: abc4fe62f1a85554ba36826049715e09, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents:
@@ -1659,7 +1665,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1146087892}
   - component: {fileID: 1146087891}
-  - component: {fileID: 1146087893}
   m_Layer: 0
   m_Name: CollectibleSpawnManager
   m_TagString: Untagged
@@ -1705,27 +1710,6 @@ Transform:
   - {fileID: 1627355566}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!135 &1146087893
-SphereCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1146087890}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 1
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Radius: 1
-  m_Center: {x: 0, y: 0.5, z: 0}
 --- !u!95 &1286238409 stripped
 Animator:
   m_CorrespondingSourceObject: {fileID: 7751428638654843591, guid: b42e07fef6b137347b5a74caa4fc9084, type: 3}

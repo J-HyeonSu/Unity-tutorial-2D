@@ -15,6 +15,7 @@ namespace Platformer
         [SerializeField, Child] private Animator animator;
         [SerializeField] private float wanderRadius = 10;
         [SerializeField] private float timeBetweenAttacks = 1f;
+        [SerializeField] private int attackDamage = 10;
 
         private StateMachine stateMachine;
         private CountdownTimer attackTimer;
@@ -59,7 +60,7 @@ namespace Platformer
             if (attackTimer.IsRunning) return;
 
             attackTimer.Start();
-            playerDetector.PlayerHealth.TakeDamage(10);
+            playerDetector.PlayerHealth.TakeDamage(attackDamage);
             
         }
         

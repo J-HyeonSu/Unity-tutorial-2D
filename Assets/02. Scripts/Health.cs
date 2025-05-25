@@ -6,6 +6,7 @@ namespace Platformer
     {
         [SerializeField] private int maxHealth = 100;
         [SerializeField] private FloatEventChannel playerHealthChannel;
+        [SerializeField] private EntityEventChannel deathChannel;
 
         private int currentHealth;
 
@@ -25,6 +26,16 @@ namespace Platformer
         {
             currentHealth -= damage;
             PublishHealthPercentage();
+            
+            if (deathChannel != null)
+            {
+                if (IsDead)
+                {
+                    deathChannel.Invoke(GetComponent<Entity>());
+                }
+                
+            }
+            
         }
 
         private void PublishHealthPercentage()
@@ -32,6 +43,7 @@ namespace Platformer
             if (playerHealthChannel != null)
             {
                 playerHealthChannel.Invoke(currentHealth/(float)maxHealth);    
+                
             }
             
         }
