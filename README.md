@@ -1,8 +1,8 @@
 # Unity Platformer Practice Project
 
-학습용 Unity 3D 플랫폼퍼 프로젝트입니다.  
+학습용 Unity 3D 프로젝트입니다.  
 모듈형 캐릭터 액션 시스템 튜토리얼 시리즈를 따라 구현했습니다.  
-[튜토리얼 유튜브 링크 (재생목록)](https://youtu.be/--CH5DYz0M?list=PLnJJ5frTPwRNdvRAD4oBtG1eUVBuj2h1O)
+[튜토리얼 유튜브 링크 (재생목록)](https://youtu.be/--_CH5DYz0M?list=PLnJJ5frTPwRNdyRAD4oBtG1eUVBuj2h1O)
 
 ---
 
