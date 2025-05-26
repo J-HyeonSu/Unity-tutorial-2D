@@ -1,8 +1,10 @@
 # Unity Platformer Practice Project
 
-학습용 Unity 3D 플랫포머 프로젝트입니다.  
-모듈형 캐릭터 액션 시스템 튜토리얼 시리즈를 따라 구현했습니다.
-https://youtu.be/--_CH5DYz0M?list=PLnJJ5frTPwRNdyRAD4oBtG1eUVBuj2h1O
+학습용 Unity 3D 플랫폼퍼 프로젝트입니다.  
+모듈형 캐릭터 액션 시스템 튜토리얼 시리즈를 따라 구현했습니다.  
+[튜토리얼 유튜브 링크 (재생목록)](https://youtu.be/--CH5DYz0M?list=PLnJJ5frTPwRNdvRAD4oBtG1eUVBuj2h1O)
+
+---
 
 ## 주요 구현
 
@@ -16,4 +18,6 @@ https://youtu.be/--_CH5DYz0M?list=PLnJJ5frTPwRNdyRAD4oBtG1eUVBuj2h1O
 - 코인 먹을 때 사운드 재생
 - 플레이어/적 사망 시 DeadState 진입 & 애니메이션 전환
 
-> 강의 외 추가 구현: DeadState 설계, 사운드 연동 등
+---
+
+> 🎓 강의 외 추가 구현: DeadState 설계, 사운드 연동 등
